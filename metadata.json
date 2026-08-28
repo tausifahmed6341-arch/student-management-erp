@@ -1,0 +1,6 @@
+{
+  "name": "Multi-Tenant University ERP System",
+  "description": "Enterprise-grade multi-tenant ERP system with RBAC, academic timetable conflict engine, attendance & biometric hardware bridge, fees & GPA analytics, real-time WebSocket alerts, and embedded AI assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
