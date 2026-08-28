@@ -6,7 +6,6 @@
   color-scheme: light;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background: #f8fafc;
-  font-size: 15px;
 }
 
 html, body, #root { 
@@ -17,8 +16,6 @@ body {
   margin: 0; 
   background: #f8fafc; 
   color: #0f172a; 
-  font-size: 15px;
-  line-height: 1.6;
 }
 
 button, input, select, textarea { 
@@ -62,12 +59,3 @@ input, select, textarea {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 116, 139, 0.7);
 }
-
-/* Larger base font sizes for better readability */
-.text-xs { font-size: 0.8125rem; line-height: 1.5; }
-.text-sm { font-size: 0.9375rem; line-height: 1.5; }
-.text-base { font-size: 1.0625rem; line-height: 1.6; }
-.text-lg { font-size: 1.1875rem; line-height: 1.6; }
-.text-xl { font-size: 1.375rem; line-height: 1.5; }
-.text-2xl { font-size: 1.625rem; line-height: 1.4; }
-.text-3xl { font-size: 2rem; line-height: 1.3; }

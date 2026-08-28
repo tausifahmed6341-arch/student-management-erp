@@ -233,9 +233,11 @@ export const Navbar: React.FC = () => {
 
           {/* User Profile & Role Indicator */}
           <div className="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800">
-            <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 dark:border-slate-700 flex items-center justify-center">
-              {getRoleIcon(user?.role)}
-            </div>
+            <img
+              src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name || 'User'}`}
+              alt={user?.name}
+              className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 dark:border-slate-700 object-cover"
+            />
             <div className="hidden lg:block text-left">
               <p className="text-xs font-bold text-slate-900 dark:text-white truncate max-w-[130px]">{user?.name}</p>
               <div className="flex items-center gap-1">

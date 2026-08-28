@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import {
   LayoutDashboard,
@@ -11,8 +11,6 @@ import {
   Radio,
   TestTube2,
   Layers,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 
 export type TabId =
@@ -29,11 +27,9 @@ export type TabId =
 interface SidebarProps {
   activeTab: TabId;
   setActiveTab: (tab: TabId) => void;
-  isCollapsed?: boolean;
-  onToggleCollapse?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isCollapsed = false, onToggleCollapse }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
   const { user, organization } = useAuth();
 
   const navItems = [
@@ -92,50 +88,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isCol
   const currentRole = user?.role || 'student';
   const visibleNavItems = navItems.filter((item) => item.roles.includes(currentRole));
 
-  const sidebarWidth = isCollapsed ? 'w-16' : 'w-64';
-
   return (
-    <aside
-      id="erp_sidebar"
-      className={`${sidebarWidth} bg-white text-slate-700 flex flex-col shrink-0 border-r border-slate-200 select-none shadow-xs fixed inset-y-0 left-0 z-40 transition-all duration-300 ease-in-out`}
-      style={{ height: 'calc(100vh - 4rem)', top: '4rem' }}
-    >
+    <aside id="erp_sidebar" className="w-64 bg-white text-slate-700 flex flex-col shrink-0 border-r border-slate-200 select-none shadow-xs">
       {/* Brand Header */}
       <div className="p-5 border-b border-slate-100 flex items-center space-x-3">
-        <div className="w-9 h-9 bg-black rounded-xl flex items-center justify-center font-bold text-white shadow-xs flex-shrink-0">
+        <div className="w-9 h-9 bg-black rounded-xl flex items-center justify-center font-bold text-white shadow-xs">
           <Layers className="w-4 h-4" />
         </div>
-        {!isCollapsed && (
-          <div className="flex flex-col overflow-hidden">
-            <span className="text-slate-900 font-bold text-sm tracking-tight leading-none whitespace-nowrap">ERP Nexus</span>
-            <span className="text-[10px] text-slate-500 font-mono mt-1 whitespace-nowrap">
-              {organization?.code || 'APEX'}
-            </span>
-          </div>
-        )}
-
-        {/* Collapse/Expand Button */}
-        {onToggleCollapse && (
-          <button
-            onClick={onToggleCollapse}
-            className={`ml-auto p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors flex-shrink-0 ${
-              isCollapsed ? 'rotate-180' : ''
-            }`}
-            title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
-            aria-label={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
-          >
-            {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-          </button>
-        )}
+        <div className="flex flex-col">
+          <span className="text-slate-900 font-bold text-sm tracking-tight leading-none">ERP Nexus</span>
+          <span className="text-[10px] text-slate-500 font-mono mt-1">
+            {organization?.code || 'APEX'} • Unified Engine
+          </span>
+        </div>
       </div>
 
       {/* Navigation list */}
       <nav className="flex-1 p-3.5 space-y-1 overflow-y-auto">
-        {!isCollapsed && (
-          <div className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-            Core Modules ({currentRole})
-          </div>
-        )}
+        <div className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          Core Modules ({currentRole})
+        </div>
 
         {visibleNavItems.map((item) => {
           const Icon = item.icon;
@@ -150,14 +122,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isCol
                 isActive
                   ? 'bg-black text-white shadow-xs'
                   : 'hover:bg-slate-100 text-slate-700'
-              } ${isCollapsed ? 'justify-center px-0' : ''}`}
-              title={isCollapsed ? item.label : undefined}
+              }`}
             >
               <div className="flex items-center space-x-2.5">
-                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'} flex-shrink-0`} />
-                {!isCollapsed && <span className="truncate">{item.label}</span>}
+                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                <span className="truncate">{item.label}</span>
               </div>
-              {!isCollapsed && item.badge && (
+              {item.badge && (
                 <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono font-medium ${
                   isActive ? 'bg-zinc-800 text-white' : 'bg-slate-100 text-slate-600'
                 }`}>
@@ -168,6 +139,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isCol
           );
         })}
       </nav>
+
+      {/* Footer / Active Instance Metadata */}
+      <div className="p-4 border-t border-slate-100">
+        <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+          <div className="text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-1">
+            Active Instance
+          </div>
+          <div className="text-xs text-slate-600 font-mono flex items-center justify-between">
+            <span>ORG_ID: {user?.org_id || 'APEX-01'}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          </div>
+        </div>
+      </div>
     </aside>
   );
 };

@@ -20,7 +20,6 @@ import { LoginView } from './components/auth/LoginView';
 
 const MainLayout: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('dashboard');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -64,22 +63,14 @@ const MainLayout: React.FC = () => {
     }
   };
 
-  const sidebarWidth = sidebarCollapsed ? 'w-16' : 'w-64';
-  const mainMarginLeft = sidebarCollapsed ? 'ml-16' : 'ml-64';
-
   return (
     <div className="min-h-screen bg-[#F6F8FC] text-slate-800 flex flex-col antialiased font-sans">
       <Navbar />
 
-      <div className="flex-1 flex overflow-hidden relative">
-        <Sidebar
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          isCollapsed={sidebarCollapsed}
-          onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-        />
+      <div className="flex-1 flex overflow-hidden">
+        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <main className={`flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 transition-all duration-300 ${mainMarginLeft}`}>
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
             <ErrorBoundary>{renderActiveView()}</ErrorBoundary>
           </div>
