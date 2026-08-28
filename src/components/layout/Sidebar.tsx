@@ -89,22 +89,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
   const visibleNavItems = navItems.filter((item) => item.roles.includes(currentRole));
 
   return (
-    <aside id="erp_sidebar" className="w-64 bg-white text-slate-600 flex flex-col shrink-0 border-r border-slate-200 select-none shadow-sm">
+    <aside id="erp_sidebar" className="w-64 bg-white text-slate-700 flex flex-col shrink-0 border-r border-slate-200 select-none shadow-xs">
       {/* Brand Header */}
       <div className="p-5 border-b border-slate-100 flex items-center space-x-3">
-        <div className="w-9 h-9 bg-gradient-to-br from-[#3B49DF] to-[#312E81] rounded-xl flex items-center justify-center font-bold text-white shadow-xs">
+        <div className="w-9 h-9 bg-black rounded-xl flex items-center justify-center font-bold text-white shadow-xs">
           <Layers className="w-4 h-4" />
         </div>
         <div className="flex flex-col">
           <span className="text-slate-900 font-bold text-sm tracking-tight leading-none">ERP Nexus</span>
-          <span className="text-[10px] text-indigo-400 font-mono mt-1">
+          <span className="text-[10px] text-slate-500 font-mono mt-1">
             {organization?.code || 'APEX'} • Unified Engine
           </span>
         </div>
       </div>
 
       {/* Navigation list */}
-      <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto">
+      <nav className="flex-1 p-3.5 space-y-1 overflow-y-auto">
         <div className="px-2 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
           Core Modules ({currentRole})
         </div>
@@ -118,21 +118,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
               key={item.id}
               id={`sidebar_tab_${item.id}`}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full p-2.5 rounded-md flex items-center justify-between text-xs font-medium transition-colors cursor-pointer ${
+              className={`w-full p-2.5 rounded-lg flex items-center justify-between text-xs font-semibold transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-indigo-50 text-indigo-700 border border-indigo-100 shadow-sm'
-                  : 'hover:bg-slate-50 text-slate-600'
+                  ? 'bg-black text-white shadow-xs'
+                  : 'hover:bg-slate-100 text-slate-700'
               }`}
             >
               <div className="flex items-center space-x-2.5">
-                <div
-                  className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                    isActive ? 'bg-indigo-600' : 'bg-slate-300'
-                  }`}
-                />
-                <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-600' : 'text-slate-400'}`} />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
                 <span className="truncate">{item.label}</span>
               </div>
+              {item.badge && (
+                <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono font-medium ${
+                  isActive ? 'bg-zinc-800 text-white' : 'bg-slate-100 text-slate-600'
+                }`}>
+                  {item.badge}
+                </span>
+              )}
             </button>
           );
         })}
@@ -145,7 +147,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
             Active Instance
           </div>
           <div className="text-xs text-slate-600 font-mono flex items-center justify-between">
-            <span>ORG_ID: {user?.org_id || '9942-XF'}</span>
+            <span>ORG_ID: {user?.org_id || 'APEX-01'}</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </div>
         </div>

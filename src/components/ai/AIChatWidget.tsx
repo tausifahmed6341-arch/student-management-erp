@@ -134,11 +134,11 @@ export const AIChatWidget: React.FC = () => {
         <button
           id="erp_ai_chat_toggle_btn"
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-700 hover:to-violet-800 text-white rounded-full shadow-xl shadow-indigo-600/30 font-semibold text-xs tracking-wide transition-transform hover:scale-105 cursor-pointer"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 bg-black hover:bg-neutral-800 text-white rounded-full shadow-xl font-semibold text-xs tracking-wide transition-transform hover:scale-105 cursor-pointer border border-zinc-700"
         >
-          <Sparkles className="w-4 h-4 text-amber-300 animate-spin-slow" />
-          <span>AI ERP Assistant</span>
-          <span className="bg-indigo-900/60 text-[10px] px-2 py-0.5 rounded-full border border-indigo-400/40">
+          <Sparkles className="w-4 h-4 text-white animate-spin-slow" />
+          <span>AI Institutional Copilot</span>
+          <span className="bg-zinc-800 text-[10px] px-2 py-0.5 rounded-full border border-zinc-700 font-mono">
             {user?.role}
           </span>
         </button>
@@ -152,27 +152,27 @@ export const AIChatWidget: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             id="erp_ai_chat_modal"
-            className={`fixed z-50 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-300 ${
+            className={`fixed z-50 bg-white border border-slate-300 shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-300 ${
               isExpanded
                 ? 'bottom-4 right-4 left-4 sm:left-auto sm:w-[680px] h-[85vh]'
                 : 'bottom-6 right-6 w-[92vw] sm:w-[420px] h-[540px]'
             }`}
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-5 py-3.5 flex items-center justify-between border-b border-indigo-500">
+            <div className="bg-black text-white px-5 py-3.5 flex items-center justify-between border-b border-zinc-800">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center font-bold text-white shadow-xs text-xs">
+                <div className="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center font-bold text-white shadow-xs text-xs">
                   AI
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="text-xs font-bold text-white tracking-tight">Institutional Copilot</h3>
-                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 text-slate-300 font-mono border border-zinc-700">
                       Gemini 3.7
                     </span>
                   </div>
                   <p className="text-[10px] text-slate-400">
-                    RBAC Context: <span className="text-indigo-400 font-semibold uppercase">{user?.role}</span>
+                    RBAC Context: <span className="text-white font-semibold uppercase">{user?.role}</span>
                   </p>
                 </div>
               </div>
@@ -180,14 +180,14 @@ export const AIChatWidget: React.FC = () => {
               <div className="flex items-center space-x-1">
                 <button
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className="p-1.5 text-indigo-100 hover:text-white hover:bg-white/15 rounded transition-colors cursor-pointer"
+                  className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 rounded transition-colors cursor-pointer"
                   title={isExpanded ? 'Minimize' : 'Expand'}
                 >
                   {isExpanded ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 text-indigo-100 hover:text-white hover:bg-white/15 rounded transition-colors cursor-pointer"
+                  className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 rounded transition-colors cursor-pointer"
                   title="Close"
                 >
                   <X className="w-4 h-4" />
@@ -196,7 +196,7 @@ export const AIChatWidget: React.FC = () => {
             </div>
 
             {/* Chat Body */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#F8FAFC] dark:bg-slate-950 text-xs">
+            <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-[#F8FAFC] text-xs">
               {messages.map((m) => {
                 const isUser = m.sender === 'user';
                 return (
@@ -206,7 +206,7 @@ export const AIChatWidget: React.FC = () => {
                   >
                     <div
                       className={`w-6 h-6 rounded flex items-center justify-center shrink-0 text-white text-[10px] font-bold ${
-                        isUser ? 'bg-indigo-600' : 'bg-slate-800'
+                        isUser ? 'bg-black' : 'bg-slate-700'
                       }`}
                     >
                       {isUser ? 'U' : 'AI'}
@@ -214,11 +214,11 @@ export const AIChatWidget: React.FC = () => {
                     <div
                       className={`max-w-[85%] rounded-xl px-3.5 py-2.5 leading-relaxed shadow-xs ${
                         isUser
-                          ? 'bg-indigo-50 dark:bg-indigo-950/60 text-slate-800 dark:text-indigo-100 border border-indigo-100 dark:border-indigo-800/40 rounded-tr-none'
-                          : 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-tl-none'
+                          ? 'bg-slate-200 text-slate-900 border border-slate-300 rounded-tr-none'
+                          : 'bg-white text-slate-900 border border-slate-200 rounded-tl-none'
                       }`}
                     >
-                      <div className="markdown-body prose prose-xs dark:prose-invert max-w-none text-xs">
+                      <div className="markdown-body prose prose-xs max-w-none text-xs text-slate-900">
                         <Markdown>{m.content}</Markdown>
                       </div>
                       <div className="flex items-center justify-end gap-1 mt-1 text-[9px] text-slate-400 font-mono">
@@ -230,8 +230,8 @@ export const AIChatWidget: React.FC = () => {
               })}
 
               {isLoading && (
-                <div className="flex items-center gap-2 text-slate-500 text-xs py-2">
-                  <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
+                <div className="flex items-center gap-2 text-slate-600 text-xs py-2">
+                  <Loader2 className="w-4 h-4 animate-spin text-black" />
                   <span>Synthesizing live ERP records & academic diagnostic...</span>
                 </div>
               )}
@@ -239,14 +239,14 @@ export const AIChatWidget: React.FC = () => {
             </div>
 
             {/* Quick Prompt Chips */}
-            <div className="px-3 py-2 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-x-auto flex items-center gap-1.5 scrollbar-none">
-              <span className="text-[10px] font-semibold text-slate-400 shrink-0">Prompts:</span>
+            <div className="px-3 py-2 border-t border-slate-200 bg-white overflow-x-auto flex items-center gap-1.5 scrollbar-none">
+              <span className="text-[10px] font-semibold text-slate-500 shrink-0">Prompts:</span>
               {getQuickChips().map((chip, i) => (
                 <button
                   key={i}
                   onClick={() => handleSend(chip)}
                   disabled={isLoading}
-                  className="shrink-0 px-2.5 py-1 rounded-full text-[11px] bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 dark:hover:text-indigo-400 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
+                  className="shrink-0 px-2.5 py-1 rounded-full text-[11px] bg-slate-100 hover:bg-slate-200 hover:text-black text-slate-700 border border-slate-200 transition-colors cursor-pointer"
                 >
                   {chip}
                 </button>
@@ -259,7 +259,7 @@ export const AIChatWidget: React.FC = () => {
                 e.preventDefault();
                 handleSend();
               }}
-              className="p-3 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center gap-2"
+              className="p-3 border-t border-slate-200 bg-white flex items-center gap-2"
             >
               <input
                 id="erp_ai_chat_input"
@@ -268,12 +268,12 @@ export const AIChatWidget: React.FC = () => {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={`Ask ERP Copilot (${user?.role} perspective)...`}
                 disabled={isLoading}
-                className="flex-1 px-3.5 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-1 px-3.5 py-2 bg-slate-100 border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-black"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="p-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl transition-colors cursor-pointer"
+                className="p-2 bg-black hover:bg-neutral-800 disabled:opacity-50 text-white rounded-xl transition-colors cursor-pointer"
               >
                 <Send className="w-4 h-4" />
               </button>

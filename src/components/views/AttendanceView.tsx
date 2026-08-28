@@ -75,7 +75,7 @@ export const AttendanceView: React.FC = () => {
 
   // Load Student Stats
   const fetchStudentData = async () => {
-    const stuId = studentProfile?.id || 'stu_alan_24CS001';
+    const stuId = studentProfile?.id || (user?.student_profile_id) || 'prof_stu_1';
     if (!token || !stuId) return;
     try {
       const res = await fetch(`/api/attendance/student/${stuId}`, {
@@ -174,25 +174,25 @@ export const AttendanceView: React.FC = () => {
 
           {/* Metric Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs">
+            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
               <span className="text-xs font-bold uppercase text-slate-500">Overall Attendance</span>
               <div className="flex items-baseline gap-2 mt-2">
-                <span className={`text-3xl font-extrabold ${studentStats?.overallPercentage >= 75 ? 'text-emerald-600' : 'text-amber-600'}`}>
-                  {studentStats?.overallPercentage || 100}%
+                <span className={`text-3xl font-extrabold ${studentStats?.overallPercentage >= 75 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                  {studentStats?.overallPercentage ?? 88}%
                 </span>
                 <span className="text-xs text-slate-500">
                   ({studentStats?.attendedCount || 0}/{studentStats?.totalLogs || 0} sessions)
                 </span>
               </div>
-              <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full mt-3 overflow-hidden">
+              <div className="w-full bg-slate-100 h-2.5 rounded-full mt-3 overflow-hidden">
                 <div
-                  className={`h-full rounded-full ${studentStats?.overallPercentage >= 75 ? 'bg-emerald-500' : 'bg-amber-500'}`}
-                  style={{ width: `${studentStats?.overallPercentage || 100}%` }}
+                  className={`h-full rounded-full ${studentStats?.overallPercentage >= 75 ? 'bg-emerald-600' : 'bg-rose-500'}`}
+                  style={{ width: `${studentStats?.overallPercentage || 88}%` }}
                 />
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs">
+            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
               <span className="text-xs font-bold uppercase text-slate-500">Exam Eligibility</span>
               <div className="text-2xl font-bold mt-2">
                 {studentStats?.overallPercentage >= 75 ? (
@@ -208,10 +208,10 @@ export const AttendanceView: React.FC = () => {
               <span className="text-xs text-slate-500 mt-2 block">Policy: Mandatory 75% minimum</span>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs">
+            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
               <span className="text-xs font-bold uppercase text-slate-500">Biometric Sync</span>
-              <div className="text-2xl font-bold text-indigo-600 mt-2 flex items-center gap-2">
-                <Radio className="w-5 h-5 text-indigo-600 animate-pulse" />
+              <div className="text-2xl font-bold text-slate-900 mt-2 flex items-center gap-2">
+                <Radio className="w-5 h-5 text-slate-900 animate-pulse" />
                 Active
               </div>
               <span className="text-xs text-slate-500 mt-2 block">Terminal check-ins stream live</span>
@@ -219,15 +219,15 @@ export const AttendanceView: React.FC = () => {
           </div>
 
           {/* Subject-Wise Attendance Breakdown */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs space-y-4">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-indigo-600" />
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-slate-900" />
               Subject-Wise Attendance Breakdown
             </h3>
 
             <div className="overflow-x-auto">
               <table className="w-full text-xs text-left">
-                <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500 font-semibold border-y border-slate-200 dark:border-slate-700">
+                <thead className="bg-slate-50 text-slate-600 font-semibold border-y border-slate-200">
                   <tr>
                     <th className="py-2.5 px-3">Subject</th>
                     <th className="py-2.5 px-3">Code</th>
@@ -236,16 +236,16 @@ export const AttendanceView: React.FC = () => {
                     <th className="py-2.5 px-3 text-center">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                <tbody className="divide-y divide-slate-100">
                   {studentStats?.subjectBreakdown?.map((sub: any) => (
-                    <tr key={sub.subject_id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
-                      <td className="py-3 px-3 font-bold text-slate-900 dark:text-white">{sub.subject_name}</td>
+                    <tr key={sub.subject_id} className="hover:bg-slate-50">
+                      <td className="py-3 px-3 font-bold text-slate-900">{sub.subject_name}</td>
                       <td className="py-3 px-3 font-mono text-slate-500">{sub.subject_code}</td>
-                      <td className="py-3 px-3 text-center text-slate-600 dark:text-slate-300">
+                      <td className="py-3 px-3 text-center text-slate-700">
                         {sub.attended_classes} / {sub.total_classes}
                       </td>
                       <td className="py-3 px-3 text-center font-bold">
-                        <span className={sub.percentage >= 75 ? 'text-emerald-600' : 'text-amber-600'}>
+                        <span className={sub.percentage >= 75 ? 'text-emerald-600' : 'text-rose-600'}>
                           {sub.percentage}%
                         </span>
                       </td>
@@ -253,8 +253,8 @@ export const AttendanceView: React.FC = () => {
                         <span
                           className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${
                             sub.percentage >= 75
-                              ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800'
-                              : 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800'
+                              ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                              : 'bg-rose-50 text-rose-800 border-rose-200'
                           }`}
                         >
                           {sub.percentage >= 75 ? 'Normal' : 'Critical (<75%)'}
@@ -273,13 +273,13 @@ export const AttendanceView: React.FC = () => {
       {(isFaculty || isAdmin) && (
         <div className="space-y-5">
           {/* Controls bar */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-xs grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
             <div>
-              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Batch</label>
+              <label className="block font-semibold text-slate-700 mb-1">Batch</label>
               <select
                 value={selectedBatchId}
                 onChange={(e) => setSelectedBatchId(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:ring-1 focus:ring-black"
               >
                 {batches.map((b) => (
                   <option key={b.id} value={b.id}>{b.name}</option>
@@ -288,11 +288,11 @@ export const AttendanceView: React.FC = () => {
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Subject</label>
+              <label className="block font-semibold text-slate-700 mb-1">Subject</label>
               <select
                 value={selectedSubjectId}
                 onChange={(e) => setSelectedSubjectId(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:ring-1 focus:ring-black"
               >
                 {subjects.map((s) => (
                   <option key={s.id} value={s.id}>{s.name} ({s.code})</option>
@@ -301,29 +301,29 @@ export const AttendanceView: React.FC = () => {
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Session Date</label>
+              <label className="block font-semibold text-slate-700 mb-1">Session Date</label>
               <input
                 type="date"
                 value={attendanceDate}
                 onChange={(e) => setAttendanceDate(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border rounded-xl font-medium"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-medium focus:ring-1 focus:ring-black"
               />
             </div>
           </div>
 
           {/* Quick Mark Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-100 p-3 rounded-xl border border-slate-200 text-xs">
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-slate-600 dark:text-slate-300">Quick Actions:</span>
+              <span className="font-semibold text-slate-700">Quick Actions:</span>
               <button
                 onClick={() => handleMarkAll('Present')}
-                className="px-2.5 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 rounded-lg font-semibold transition-colors cursor-pointer"
+                className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg font-semibold transition-colors cursor-pointer"
               >
                 ✓ Mark All Present
               </button>
               <button
                 onClick={() => handleMarkAll('Absent')}
-                className="px-2.5 py-1 bg-rose-100 hover:bg-rose-200 text-rose-800 dark:bg-rose-950 dark:text-rose-300 rounded-lg font-semibold transition-colors cursor-pointer"
+                className="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 rounded-lg font-semibold transition-colors cursor-pointer"
               >
                 ✗ Mark All Absent
               </button>
@@ -332,7 +332,7 @@ export const AttendanceView: React.FC = () => {
             <button
               onClick={handleSubmitAttendance}
               disabled={isSubmitting || studentList.length === 0}
-              className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-xs disabled:opacity-50"
+              className="px-5 py-2 bg-black hover:bg-neutral-800 text-white rounded-xl font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-xs disabled:opacity-50"
             >
               <Send className="w-4 h-4" />
               {isSubmitting ? 'Saving...' : `Save Attendance (${studentList.length} Students)`}
@@ -340,16 +340,16 @@ export const AttendanceView: React.FC = () => {
           </div>
 
           {submitSuccess && (
-            <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 rounded-xl text-xs text-emerald-900 dark:text-emerald-200 flex items-center gap-2">
+            <div className="p-3.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-900 flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-emerald-600" />
               <span>{submitSuccess}</span>
             </div>
           )}
 
           {/* Student Roster Table */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xs">
+          <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
             <table className="w-full text-xs text-left">
-              <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 font-semibold border-b border-slate-200 dark:border-slate-700">
+              <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
                 <tr>
                   <th className="py-3 px-4">Roll Number</th>
                   <th className="py-3 px-4">Student Name</th>
@@ -357,24 +357,24 @@ export const AttendanceView: React.FC = () => {
                   <th className="py-3 px-4 text-center">Attendance Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-100">
                 {studentList.map((stu) => {
                   const isPresent = stu.status === 'Present';
                   const isAbsent = stu.status === 'Absent';
                   const isLate = stu.status === 'Late';
 
                   return (
-                    <tr key={stu.student_id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
-                      <td className="py-3 px-4 font-mono font-bold text-indigo-600 dark:text-indigo-400">
+                    <tr key={stu.student_id} className="hover:bg-slate-50">
+                      <td className="py-3 px-4 font-mono font-bold text-slate-900">
                         {stu.roll_number}
                       </td>
-                      <td className="py-3 px-4 font-medium text-slate-900 dark:text-white">
+                      <td className="py-3 px-4 font-medium text-slate-900">
                         {stu.name}
                       </td>
                       <td className="py-3 px-4 text-center">
                         <span
                           className={`font-bold ${
-                            stu.cumulative_attendance >= 75 ? 'text-emerald-600' : 'text-amber-600'
+                            stu.cumulative_attendance >= 75 ? 'text-emerald-600' : 'text-rose-600'
                           }`}
                         >
                           {stu.cumulative_attendance}%
@@ -384,14 +384,14 @@ export const AttendanceView: React.FC = () => {
                         )}
                       </td>
                       <td className="py-3 px-4 text-center">
-                        <div className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+                        <div className="inline-flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
                           <button
                             type="button"
                             onClick={() => handleStatusChange(stu.student_id, 'Present')}
                             className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                               isPresent
                                 ? 'bg-emerald-600 text-white shadow-xs'
-                                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                                : 'text-slate-600 hover:text-slate-900'
                             }`}
                           >
                             Present
@@ -402,7 +402,7 @@ export const AttendanceView: React.FC = () => {
                             className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                               isLate
                                 ? 'bg-amber-600 text-white shadow-xs'
-                                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                                : 'text-slate-600 hover:text-slate-900'
                             }`}
                           >
                             Late
@@ -413,7 +413,7 @@ export const AttendanceView: React.FC = () => {
                             className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                               isAbsent
                                 ? 'bg-rose-600 text-white shadow-xs'
-                                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                                : 'text-slate-600 hover:text-slate-900'
                             }`}
                           >
                             Absent

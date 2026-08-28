@@ -164,24 +164,55 @@ authRouter.get('/admin/dashboard', authenticateToken, authorizeRoles('admin'), (
 
 authRouter.get('/student/dashboard', authenticateToken, authorizeRoles('student', 'admin'), (req: AuthenticatedRequest, res: Response) => {
   const org_id = req.user!.org_id;
-  const studentProfile = Array.from(db.studentProfiles.values()).find((p) => p.user_id === req.user!.userId);
+  let studentProfile = Array.from(db.studentProfiles.values()).find((p) => p.user_id === req.user!.userId);
+
+  // If accessed by an admin previewing or student profile ID in token
+  if (!studentProfile) {
+    if (req.user!.student_profile_id) {
+      studentProfile = db.studentProfiles.get(req.user!.student_profile_id);
+    } else {
+      // Default to primary demo student in the organization
+      studentProfile = Array.from(db.studentProfiles.values()).find((p) => p.org_id === org_id);
+    }
+  }
 
   if (!studentProfile) {
     return res.status(404).json({ error: 'Student profile not found' });
   }
 
+  const studentUser = db.users.get(studentProfile.user_id);
   const batch = db.batches.get(studentProfile.batch_id);
-  const subjects = Array.from(db.subjects.values()).filter((s) => s.org_id === org_id);
+  const course = batch ? db.courses.get(batch.course_id) : undefined;
+  const department = course ? db.departments.get(course.department_id) : undefined;
 
   // Student attendance
-  const studentLogs = Array.from(db.attendanceLogs.values()).filter((l) => l.student_id === studentProfile.id);
+  const studentLogs = Array.from(db.attendanceLogs.values()).filter((l) => l.student_id === studentProfile!.id);
   const presentCount = studentLogs.filter((l) => l.status === 'Present' || l.status === 'Late').length;
   const totalLogs = studentLogs.length;
   const attendancePercentage = totalLogs > 0 ? Number(((presentCount / totalLogs) * 100).toFixed(1)) : 100;
 
+  // Subject breakdown
+  const subjects = Array.from(db.subjects.values()).filter((s) => s.org_id === org_id);
+  const subjectsAttendance = subjects.map((sub) => {
+    const subLogs = studentLogs.filter((l) => l.subject_id === sub.id);
+    const subTotal = subLogs.length;
+    const subAttended = subLogs.filter((l) => l.status === 'Present' || l.status === 'Late').length;
+    const pct = subTotal > 0 ? Number(((subAttended / subTotal) * 100).toFixed(1)) : 100;
+    return {
+      subject_id: sub.id,
+      subject_code: sub.code,
+      subject_name: sub.name,
+      credits: sub.credits,
+      total_classes: subTotal,
+      attended_classes: subAttended,
+      percentage: pct,
+      is_critical: pct < 75,
+    };
+  });
+
   // Student timetable
   const timetable = Array.from(db.timetables.values())
-    .filter((t) => t.batch_id === studentProfile.batch_id)
+    .filter((t) => t.batch_id === studentProfile!.batch_id)
     .map((t) => ({
       ...t,
       subject: db.subjects.get(t.subject_id),
@@ -189,16 +220,47 @@ authRouter.get('/student/dashboard', authenticateToken, authorizeRoles('student'
       classroom: db.classrooms.get(t.room_id),
     }));
 
+  // Fees calculation
+  const feeStructures = Array.from(db.feeStructures.values()).filter((f) => f.batch_id === studentProfile!.batch_id);
+  const totalFeeObligation = feeStructures.reduce((sum, f) => sum + f.total_amount, 0) || 4500;
+  const payments = Array.from(db.feePayments.values()).filter((p) => p.student_id === studentProfile!.id && p.status === 'Success');
+  const totalPaid = payments.reduce((sum, p) => sum + p.amount_paid, 0);
+  const pendingBalance = Math.max(0, totalFeeObligation - totalPaid);
+
+  // Grades & GPA
+  const assessments = Array.from(db.grades.values()).filter((g) => g.student_id === studentProfile!.id);
+  const avgScore = assessments.length > 0
+    ? Number((assessments.reduce((sum, g) => sum + (g.marks_obtained / g.max_marks) * 100, 0) / assessments.length).toFixed(1))
+    : 85.0;
+  const gpa = Number((avgScore / 10).toFixed(2));
+
   return res.json({
     status: 'success',
     role: 'student',
+    user: studentUser ? { id: studentUser.id, name: studentUser.name, email: studentUser.email, avatar: studentUser.avatar } : undefined,
     profile: studentProfile,
     batch,
+    course,
+    department,
     attendancePercentage,
     totalClasses: totalLogs,
     attendedClasses: presentCount,
     isCriticalAttendance: attendancePercentage < 75,
+    subjectsAttendance,
     timetable,
+    feeStatus: {
+      totalObligation: totalFeeObligation,
+      totalPaid,
+      pendingBalance,
+      isOverdue: pendingBalance > 0,
+    },
+    academicStatus: {
+      gpa,
+      avgScore,
+      totalCredits: 13,
+      rank: 1,
+      standing: 'Top 10%',
+    },
   });
 });
 

@@ -139,11 +139,11 @@ orgRouter.post(
 
     if (req.file) {
       csvContent = req.file.buffer.toString('utf-8');
-    } else if (req.body && req.body.csv_text) {
-      csvContent = req.body.csv_text;
+    } else if (req.body && (req.body.csv_data || req.body.csv_text)) {
+      csvContent = req.body.csv_data || req.body.csv_text;
     } else {
       return res.status(400).json({
-        error: 'No CSV file or csv_text payload provided.',
+        error: 'No CSV file or csv_data/csv_text payload provided.',
         expectedFormat: 'name,email,roll_number,batch_id,parent_contact',
       });
     }
@@ -165,6 +165,7 @@ orgRouter.post(
     const importedStudents: Array<{ id: string; name: string; email: string; roll_number: string }> = [];
     const errors: Array<{ line: number; error: string }> = [];
 
+    const explicitBatchId = req.body?.batch_id;
     const defaultBatch = Array.from(db.batches.values()).find((b) => b.org_id === org_id);
     const passwordHash = bcrypt.hashSync('Password@123', 8);
 
@@ -175,7 +176,7 @@ orgRouter.post(
       const name = row[nameIdx >= 0 ? nameIdx : 0];
       const email = row[emailIdx >= 0 ? emailIdx : 1];
       const rollNumber = row[rollIdx >= 0 ? rollIdx : 2];
-      const batchId = (batchIdx >= 0 && row[batchIdx]) ? row[batchIdx] : defaultBatch?.id || 'batch_cse_2024_a';
+      const batchId = (batchIdx >= 0 && row[batchIdx]) ? row[batchIdx] : explicitBatchId || defaultBatch?.id || 'batch_cse_2024_a';
       const phone = phoneIdx >= 0 ? row[phoneIdx] : '+1 (555) 000-0000';
 
       if (!name || !email || !rollNumber) {

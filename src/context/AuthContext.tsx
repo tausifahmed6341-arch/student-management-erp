@@ -10,6 +10,7 @@ interface AuthContextType {
   login: (email: string, password?: string, org_id?: string) => Promise<boolean>;
   logout: () => void;
   quickSwitchUser: (demoUser: any) => Promise<void>;
+  isSuperAdmin: boolean;
   isAdmin: boolean;
   isFaculty: boolean;
   isStudent: boolean;
@@ -100,7 +101,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const isAdmin = user?.role === 'admin';
+  const isSuperAdmin = user?.role === 'super_admin';
+  const isAdmin = user?.role === 'admin' || user?.role === 'super_admin';
   const isFaculty = user?.role === 'faculty';
   const isStudent = user?.role === 'student';
 
@@ -115,6 +117,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         logout,
         quickSwitchUser,
+        isSuperAdmin,
         isAdmin,
         isFaculty,
         isStudent,

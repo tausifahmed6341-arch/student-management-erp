@@ -120,6 +120,7 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           batch_id: selectedBatchForCsv,
+          csv_text: csvContent,
           csv_data: csvContent,
         }),
       });
@@ -137,7 +138,7 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Organization Onboarding & Hierarchy</h2>
+          <h2 className="text-xl font-bold text-slate-900">Organization Onboarding & Hierarchy</h2>
           <p className="text-xs text-slate-500">
             Structure departments, degree programs, student batches, and batch CSV ingest.
           </p>
@@ -145,7 +146,7 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
       </div>
 
       {/* Sub Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto">
         {[
           { id: 'departments', label: 'Departments', icon: Building2, count: departments.length },
           { id: 'courses', label: 'Degree Programs', icon: GraduationCap, count: courses.length },
@@ -158,16 +159,16 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
             <button
               key={tab.id}
               onClick={() => setActiveSubTab(tab.id as any)}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer shrink-0 border ${
                 isActive
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  ? 'bg-black text-white border-black shadow-xs'
+                  : 'text-slate-700 bg-white border-slate-200 hover:bg-slate-50'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
               <span>{tab.label}</span>
               {tab.count !== null && (
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${isActive ? 'bg-indigo-700 text-white' : 'bg-slate-200 dark:bg-slate-700'}`}>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${isActive ? 'bg-zinc-800 text-white' : 'bg-slate-100 text-slate-700'}`}>
                   {tab.count}
                 </span>
               )}
@@ -180,13 +181,13 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
       {activeSubTab === 'departments' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-3">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Active Academic Departments</h3>
+            <h3 className="text-sm font-bold text-slate-900">Active Academic Departments</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {departments.map((dept) => (
-                <div key={dept.id} className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xs">
+                <div key={dept.id} className="p-4 bg-white border border-slate-200 rounded-xl shadow-xs">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-bold text-sm text-slate-900 dark:text-white">{dept.name}</h4>
-                    <span className="text-xs font-mono font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950/50 px-2 py-0.5 rounded">
+                    <h4 className="font-bold text-sm text-slate-900">{dept.name}</h4>
+                    <span className="text-xs font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
                       {dept.code}
                     </span>
                   </div>
@@ -196,44 +197,44 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs h-fit">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-3">Add Department</h3>
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs h-fit">
+            <h3 className="text-sm font-bold text-slate-900 mb-3">Add Department</h3>
             <form onSubmit={handleAddDept} className="space-y-3 text-xs">
               <div>
-                <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Department Name</label>
+                <label className="block font-semibold text-slate-700 mb-1">Department Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Electrical Engineering"
                   value={deptForm.name}
                   onChange={(e) => setDeptForm({ ...deptForm, name: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
                 />
               </div>
               <div>
-                <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Department Code</label>
+                <label className="block font-semibold text-slate-700 mb-1">Department Code</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. EEE"
                   value={deptForm.code}
                   onChange={(e) => setDeptForm({ ...deptForm, code: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
                 />
               </div>
               <div>
-                <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Description</label>
+                <label className="block font-semibold text-slate-700 mb-1">Description</label>
                 <input
                   type="text"
                   placeholder="e.g. School of Power & Electronics"
                   value={deptForm.description}
                   onChange={(e) => setDeptForm({ ...deptForm, description: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                className="w-full py-2 bg-black hover:bg-neutral-800 text-white rounded-lg font-semibold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
               >
                 <Plus className="w-3.5 h-3.5" /> Create Department
               </button>
@@ -246,13 +247,13 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
       {activeSubTab === 'courses' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-3">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Degree Programs & Curriculums</h3>
+            <h3 className="text-sm font-bold text-slate-900">Degree Programs & Curriculums</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {courses.map((c) => (
-                <div key={c.id} className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xs">
+                <div key={c.id} className="p-4 bg-white border border-slate-200 rounded-xl shadow-xs">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-bold text-sm text-slate-900 dark:text-white">{c.name}</h4>
-                    <span className="text-xs font-mono font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950/50 px-2 py-0.5 rounded">
+                    <h4 className="font-bold text-sm text-slate-900">{c.name}</h4>
+                    <span className="text-xs font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
                       {c.code}
                     </span>
                   </div>
@@ -262,16 +263,16 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs h-fit">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-3">Add Degree Program</h3>
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs h-fit">
+            <h3 className="text-sm font-bold text-slate-900 mb-3">Add Degree Program</h3>
             <form onSubmit={handleAddCourse} className="space-y-3 text-xs">
               <div>
-                <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Parent Department</label>
+                <label className="block font-semibold text-slate-700 mb-1">Parent Department</label>
                 <select
                   required
                   value={courseForm.department_id}
                   onChange={(e) => setCourseForm({ ...courseForm, department_id: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
                 >
                   <option value="">Select department...</option>
                   {departments.map((d) => (
@@ -280,30 +281,30 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
                 </select>
               </div>
               <div>
-                <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Course Name</label>
+                <label className="block font-semibold text-slate-700 mb-1">Course Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Master of Computer Applications"
                   value={courseForm.name}
                   onChange={(e) => setCourseForm({ ...courseForm, name: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
                 />
               </div>
               <div>
-                <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Course Code</label>
+                <label className="block font-semibold text-slate-700 mb-1">Course Code</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. MCA"
                   value={courseForm.code}
                   onChange={(e) => setCourseForm({ ...courseForm, code: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                className="w-full py-2 bg-black hover:bg-neutral-800 text-white rounded-lg font-semibold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
               >
                 <Plus className="w-3.5 h-3.5" /> Create Course
               </button>
@@ -316,13 +317,13 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
       {activeSubTab === 'batches' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-3">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Active Student Batches</h3>
+            <h3 className="text-sm font-bold text-slate-900">Active Student Batches</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {batches.map((b) => (
-                <div key={b.id} className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xs">
+                <div key={b.id} className="p-4 bg-white border border-slate-200 rounded-xl shadow-xs">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-bold text-sm text-slate-900 dark:text-white">{b.name}</h4>
-                    <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded">
+                    <h4 className="font-bold text-sm text-slate-900">{b.name}</h4>
+                    <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                       Semester {b.current_semester}
                     </span>
                   </div>
@@ -332,16 +333,16 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs h-fit">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-3">Add Batch</h3>
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs h-fit">
+            <h3 className="text-sm font-bold text-slate-900 mb-3">Add Batch</h3>
             <form onSubmit={handleAddBatch} className="space-y-3 text-xs">
               <div>
-                <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Degree Program</label>
+                <label className="block font-semibold text-slate-700 mb-1">Degree Program</label>
                 <select
                   required
                   value={batchForm.course_id}
                   onChange={(e) => setBatchForm({ ...batchForm, course_id: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
                 >
                   <option value="">Select course...</option>
                   {courses.map((c) => (
@@ -350,39 +351,39 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
                 </select>
               </div>
               <div>
-                <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Batch Section Name</label>
+                <label className="block font-semibold text-slate-700 mb-1">Batch Section Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. CSE Class of 2025 - Section B"
                   value={batchForm.name}
                   onChange={(e) => setBatchForm({ ...batchForm, name: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
                 />
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Start Year</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Start Year</label>
                   <input
                     type="number"
                     value={batchForm.start_year}
                     onChange={(e) => setBatchForm({ ...batchForm, start_year: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
                   />
                 </div>
                 <div>
-                  <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">End Year</label>
+                  <label className="block font-semibold text-slate-700 mb-1">End Year</label>
                   <input
                     type="number"
                     value={batchForm.end_year}
                     onChange={(e) => setBatchForm({ ...batchForm, end_year: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
                   />
                 </div>
               </div>
               <button
                 type="submit"
-                className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                className="w-full py-2 bg-black hover:bg-neutral-800 text-white rounded-lg font-semibold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
               >
                 <Plus className="w-3.5 h-3.5" /> Create Batch
               </button>
@@ -393,24 +394,24 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
 
       {/* CSV IMPORT TAB */}
       {activeSubTab === 'csv_import' && (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs space-y-5">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileSpreadsheet className="w-5 h-5 text-indigo-600" />
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Batch CSV Student Onboarding</h3>
+              <FileSpreadsheet className="w-5 h-5 text-slate-900" />
+              <h3 className="text-sm font-bold text-slate-900">Batch CSV Student Onboarding</h3>
             </div>
             <span className="text-xs text-slate-500 font-mono">Format: name,email,roll_number,password</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
                 Target Student Batch
               </label>
               <select
                 value={selectedBatchForCsv}
                 onChange={(e) => setSelectedBatchForCsv(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900"
               >
                 {batches.map((b) => (
                   <option key={b.id} value={b.id}>{b.name}</option>
@@ -420,14 +421,14 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-slate-700 mb-1">
               CSV Raw Data Payload
             </label>
             <textarea
               rows={6}
               value={csvContent}
               onChange={(e) => setCsvContent(e.target.value)}
-              className="w-full font-mono text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full font-mono text-xs p-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:ring-1 focus:ring-black focus:outline-none"
             />
           </div>
 
@@ -438,7 +439,7 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
             <button
               onClick={handleImportCsv}
               disabled={isImporting}
-              className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 cursor-pointer shadow-xs disabled:opacity-50"
+              className="px-5 py-2.5 bg-black hover:bg-neutral-800 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 cursor-pointer shadow-xs disabled:opacity-50"
             >
               <Upload className="w-4 h-4" />
               {isImporting ? 'Ingesting Records...' : 'Execute Batch Import'}
@@ -449,8 +450,8 @@ Katherine Johnson,katherine.johnson@apextech.edu,24CS005,Password@123`);
           {importStatus && (
             <div className={`p-4 rounded-xl border flex items-start gap-3 ${
               importStatus.importedCount > 0
-                ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200'
-                : 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200'
+                ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                : 'bg-amber-50 border-amber-300 text-amber-900'
             }`}>
               <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
               <div>

@@ -25,7 +25,7 @@ const MainLayout: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center text-slate-900 space-y-4">
-        <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin" />
         <div className="text-center">
           <h2 className="text-base font-bold">Initializing ERP Nexus</h2>
           <p className="text-xs text-slate-500 mt-1">Preparing your secure academic workspace...</p>

@@ -22,7 +22,7 @@ export const ToastContainer: React.FC = () => {
               exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
               className={`pointer-events-auto p-4 rounded-xl border shadow-lg flex items-start gap-3 backdrop-blur-md ${
                 isBiometric
-                  ? 'bg-indigo-50 text-slate-800 border-indigo-200 shadow-indigo-100'
+                  ? 'bg-slate-900 text-white border-slate-800 shadow-slate-900/20'
                   : isWarning
                   ? 'bg-amber-50 text-slate-800 border-amber-200 shadow-amber-100'
                   : isSuccess
@@ -31,17 +31,17 @@ export const ToastContainer: React.FC = () => {
               }`}
             >
               <div className="shrink-0 mt-0.5">
-                {isBiometric && <Radio className="w-5 h-5 text-indigo-300 animate-pulse" />}
-                {isWarning && <AlertCircle className="w-5 h-5 text-amber-300" />}
-                {isSuccess && <CheckCircle className="w-5 h-5 text-emerald-300" />}
-                {!isBiometric && !isWarning && !isSuccess && <Info className="w-5 h-5 text-sky-300" />}
+                {isBiometric && <Radio className="w-5 h-5 text-white animate-pulse" />}
+                {isWarning && <AlertCircle className="w-5 h-5 text-amber-600" />}
+                {isSuccess && <CheckCircle className="w-5 h-5 text-emerald-600" />}
+                {!isBiometric && !isWarning && !isSuccess && <Info className="w-5 h-5 text-slate-600" />}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
-                  <h4 className="text-sm font-semibold text-slate-900 truncate">{toast.title}</h4>
+                  <h4 className={`text-sm font-semibold truncate ${isBiometric ? 'text-white' : 'text-slate-900'}`}>{toast.title}</h4>
                   <span className="text-[10px] text-slate-400 shrink-0">{toast.timestamp}</span>
                 </div>
-                <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">{toast.message}</p>
+                <p className={`text-xs mt-0.5 leading-relaxed ${isBiometric ? 'text-slate-300' : 'text-slate-600'}`}>{toast.message}</p>
               </div>
               <button
                 onClick={() => dismissToast(toast.id)}

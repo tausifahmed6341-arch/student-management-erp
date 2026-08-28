@@ -23,17 +23,17 @@ export const Navbar: React.FC = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const getRoleIcon = (role?: string) => {
-    if (role === 'super_admin') return <Shield className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />;
-    if (role === 'admin') return <Shield className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />;
-    if (role === 'faculty') return <BookOpen className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />;
-    return <GraduationCap className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />;
+    if (role === 'super_admin') return <Shield className="w-3.5 h-3.5 text-zinc-900" />;
+    if (role === 'admin') return <Shield className="w-3.5 h-3.5 text-zinc-700" />;
+    if (role === 'faculty') return <BookOpen className="w-3.5 h-3.5 text-emerald-700" />;
+    return <GraduationCap className="w-3.5 h-3.5 text-zinc-800" />;
   };
 
   const getRoleBadgeColor = (role?: string) => {
-    if (role === 'super_admin') return 'bg-[#FAF5FF] text-[#7E22CE] border-[#E9D5FF]';
-    if (role === 'admin') return 'bg-[#EFF6FF] text-[#1D4ED8] border-[#BFDBFE]';
-    if (role === 'faculty') return 'bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]';
-    return 'bg-[#FFFBEB] text-[#B45309] border-[#FDE68A]';
+    if (role === 'super_admin') return 'bg-zinc-900 text-white border-zinc-800';
+    if (role === 'admin') return 'bg-zinc-100 text-zinc-900 border-zinc-300';
+    if (role === 'faculty') return 'bg-emerald-50 text-emerald-800 border-emerald-200';
+    return 'bg-zinc-100 text-zinc-800 border-zinc-300';
   };
 
   const handleDemoSwitch = async (role: 'superAdmin' | 'admin' | 'teacher' | 'student') => {
@@ -41,37 +41,37 @@ export const Navbar: React.FC = () => {
     if (role === 'superAdmin') email = 'superadmin@nexus.edu';
     if (role === 'admin') email = 'admin@apextech.edu';
     if (role === 'teacher') email = 'alan.turing@apextech.edu';
-    if (role === 'student') email = 'alex.rivera@apextech.edu';
+    if (role === 'student') email = 'student1@apextech.edu';
 
     await quickSwitchUser({ email, org_id: 'org_apex' });
   };
 
   return (
     <>
-      <header id="erp_navbar" className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 md:px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs select-none">
+      <header id="erp_navbar" className="h-16 bg-white border-b border-slate-200 px-4 md:px-6 flex items-center justify-between sticky top-0 z-30 shadow-xs select-none">
         {/* Left: ERP Nexus Brand Hero */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#3B49DF] to-[#312E81] flex items-center justify-center text-white shadow-xs font-bold">
+          <div className="w-9 h-9 rounded-xl bg-black flex items-center justify-center text-white shadow-xs font-bold">
             <Building className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-slate-900 dark:text-white tracking-tight">
+              <span className="text-base font-bold text-slate-900 tracking-tight">
                 ERP Nexus
               </span>
-              <span className="hidden sm:inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">
+              <span className="hidden sm:inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
                 {organization?.code || 'APEX'}
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden md:block">
+            <p className="text-[11px] text-slate-500 hidden md:block">
               Unified Student Management Platform
             </p>
           </div>
         </div>
 
-        {/* Center: 4 Quick Demo Role Pills (Exact matching buttons from screenshot) */}
-        <div className="hidden xl:flex items-center gap-2 bg-slate-100/80 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-2">
+        {/* Center: 4 Quick Demo Role Pills - Sleek Flat Black & White */}
+        <div className="hidden xl:flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-2">
             Demo:
           </span>
 
@@ -79,10 +79,10 @@ export const Navbar: React.FC = () => {
             id="nav_demo_super_admin"
             type="button"
             onClick={() => handleDemoSwitch('superAdmin')}
-            className={`py-1 px-2.5 rounded-lg text-xs font-semibold transition cursor-pointer border ${
+            className={`py-1 px-3 rounded-lg text-xs font-semibold transition cursor-pointer border ${
               user?.role === 'super_admin'
-                ? 'bg-[#FAF5FF] text-[#7E22CE] border-[#D8B4FE] ring-2 ring-[#D8B4FE]'
-                : 'bg-white/80 dark:bg-slate-800 text-[#7E22CE] border-[#E9D5FF] hover:bg-[#FAF5FF]'
+                ? 'bg-black text-white border-black shadow-xs'
+                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
             }`}
           >
             Super-Admin
@@ -92,10 +92,10 @@ export const Navbar: React.FC = () => {
             id="nav_demo_admin"
             type="button"
             onClick={() => handleDemoSwitch('admin')}
-            className={`py-1 px-2.5 rounded-lg text-xs font-semibold transition cursor-pointer border ${
+            className={`py-1 px-3 rounded-lg text-xs font-semibold transition cursor-pointer border ${
               user?.role === 'admin'
-                ? 'bg-[#EFF6FF] text-[#1D4ED8] border-[#93C5FD] ring-2 ring-[#93C5FD]'
-                : 'bg-white/80 dark:bg-slate-800 text-[#1D4ED8] border-[#BFDBFE] hover:bg-[#EFF6FF]'
+                ? 'bg-black text-white border-black shadow-xs'
+                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
             }`}
           >
             Admin
@@ -105,10 +105,10 @@ export const Navbar: React.FC = () => {
             id="nav_demo_teacher"
             type="button"
             onClick={() => handleDemoSwitch('teacher')}
-            className={`py-1 px-2.5 rounded-lg text-xs font-semibold transition cursor-pointer border ${
+            className={`py-1 px-3 rounded-lg text-xs font-semibold transition cursor-pointer border ${
               user?.role === 'faculty'
-                ? 'bg-[#ECFDF5] text-[#047857] border-[#6EE7B7] ring-2 ring-[#6EE7B7]'
-                : 'bg-white/80 dark:bg-slate-800 text-[#047857] border-[#A7F3D0] hover:bg-[#ECFDF5]'
+                ? 'bg-black text-white border-black shadow-xs'
+                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
             }`}
           >
             Teacher
@@ -118,10 +118,10 @@ export const Navbar: React.FC = () => {
             id="nav_demo_student"
             type="button"
             onClick={() => handleDemoSwitch('student')}
-            className={`py-1 px-2.5 rounded-lg text-xs font-semibold transition cursor-pointer border ${
+            className={`py-1 px-3 rounded-lg text-xs font-semibold transition cursor-pointer border ${
               user?.role === 'student'
-                ? 'bg-[#FFFBEB] text-[#B45309] border-[#FCD34D] ring-2 ring-[#FCD34D]'
-                : 'bg-white/80 dark:bg-slate-800 text-[#B45309] border-[#FDE68A] hover:bg-[#FFFBEB]'
+                ? 'bg-black text-white border-black shadow-xs'
+                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
             }`}
           >
             Student
@@ -133,7 +133,7 @@ export const Navbar: React.FC = () => {
           {/* Quick Login / Switch Modal Button */}
           <button
             onClick={() => setShowAuthModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 transition cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-black text-white border border-slate-800 transition cursor-pointer shadow-xs"
             title="Open ERP Nexus Login View"
           >
             <LogIn className="w-3.5 h-3.5" />
@@ -192,7 +192,7 @@ export const Navbar: React.FC = () => {
                   {unreadNotifsCount > 0 && (
                     <button
                       onClick={() => markAllAsRead()}
-                      className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer font-medium"
+                      className="text-xs text-slate-900 hover:underline flex items-center gap-1 cursor-pointer font-semibold"
                     >
                       <CheckCheck className="w-3.5 h-3.5" />
                       Mark all read
@@ -200,7 +200,7 @@ export const Navbar: React.FC = () => {
                   )}
                 </div>
 
-                <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
+                <div className="max-h-80 overflow-y-auto divide-y divide-slate-100">
                   {notifications.length === 0 ? (
                     <div className="py-8 text-center text-xs text-slate-400">No notifications</div>
                   ) : (
@@ -208,18 +208,18 @@ export const Navbar: React.FC = () => {
                       <div
                         key={n.id}
                         onClick={() => markAsRead(n.id)}
-                        className={`p-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer ${
-                          !n.is_read ? 'bg-indigo-50/40 dark:bg-indigo-950/20' : ''
+                        className={`p-3.5 hover:bg-slate-50 transition-colors cursor-pointer ${
+                          !n.is_read ? 'bg-slate-100/60' : ''
                         }`}
                       >
                         <div className="flex items-start justify-between gap-2 mb-1">
                           <div className="flex items-center gap-1.5">
                             {n.type === 'low_attendance' && <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />}
-                            <h5 className="text-xs font-bold text-slate-900 dark:text-white leading-snug">{n.title}</h5>
+                            <h5 className="text-xs font-bold text-slate-900 leading-snug">{n.title}</h5>
                           </div>
-                          {!n.is_read && <span className="w-2 h-2 rounded-full bg-indigo-600 shrink-0" />}
+                          {!n.is_read && <span className="w-2 h-2 rounded-full bg-black shrink-0" />}
                         </div>
-                        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{n.message}</p>
+                        <p className="text-xs text-slate-600 leading-relaxed">{n.message}</p>
                         <span className="text-[10px] text-slate-400 mt-1 block">
                           {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>

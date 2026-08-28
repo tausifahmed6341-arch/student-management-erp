@@ -57,7 +57,7 @@ export const SyllabusView: React.FC = () => {
       });
       if (res.ok) {
         const data = await res.json();
-        setSyllabusUnits(data.syllabusUnits || []);
+        setSyllabusUnits(Array.isArray(data) ? data : data.syllabusUnits || []);
       }
 
       // Fetch velocity prediction
@@ -163,7 +163,7 @@ export const SyllabusView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Academic Syllabus Engine</h2>
+          <h2 className="text-xl font-bold text-slate-900">Academic Syllabus Engine</h2>
           <p className="text-xs text-slate-500">
             Interactive syllabus progress tracking, teaching velocity calculations, and milestone forecasts.
           </p>
@@ -173,13 +173,13 @@ export const SyllabusView: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowAddUnit(!showAddUnit)}
-              className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+              className="px-3.5 py-2 bg-black hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
             >
               <Plus className="w-3.5 h-3.5" /> Add Unit
             </button>
             <button
               onClick={() => setShowAddSubject(!showAddSubject)}
-              className="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer border border-slate-200 dark:border-slate-700"
+              className="px-3.5 py-2 bg-white hover:bg-slate-100 text-slate-800 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer border border-slate-300"
             >
               <Plus className="w-3.5 h-3.5" /> New Subject
             </button>
@@ -189,34 +189,34 @@ export const SyllabusView: React.FC = () => {
 
       {/* Add Forms */}
       {showAddSubject && (
-        <form onSubmit={handleCreateSubject} className="p-4 bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-800 rounded-xl shadow-xs grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+        <form onSubmit={handleCreateSubject} className="p-4 bg-white border border-slate-300 rounded-xl shadow-xs grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
           <div>
-            <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Subject Code</label>
+            <label className="block font-semibold text-slate-700 mb-1">Subject Code</label>
             <input
               type="text"
               required
               placeholder="e.g. CS504"
               value={newSubject.code}
               onChange={(e) => setNewSubject({ ...newSubject, code: e.target.value })}
-              className="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border rounded-lg"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
             />
           </div>
           <div className="sm:col-span-2">
-            <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Subject Title</label>
+            <label className="block font-semibold text-slate-700 mb-1">Subject Title</label>
             <input
               type="text"
               required
               placeholder="e.g. Distributed Cloud Computing"
               value={newSubject.name}
               onChange={(e) => setNewSubject({ ...newSubject, name: e.target.value })}
-              className="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border rounded-lg"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
             />
           </div>
           <div className="flex items-end gap-2">
-            <button type="submit" className="flex-1 py-1.5 bg-indigo-600 text-white rounded-lg font-semibold">
+            <button type="submit" className="flex-1 py-1.5 bg-black hover:bg-neutral-800 text-white rounded-lg font-semibold cursor-pointer">
               Save Subject
             </button>
-            <button type="button" onClick={() => setShowAddSubject(false)} className="px-3 py-1.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg">
+            <button type="button" onClick={() => setShowAddSubject(false)} className="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg cursor-pointer hover:bg-slate-200">
               Cancel
             </button>
           </div>
@@ -224,53 +224,53 @@ export const SyllabusView: React.FC = () => {
       )}
 
       {showAddUnit && (
-        <form onSubmit={handleCreateUnit} className="p-4 bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-800 rounded-xl shadow-xs grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+        <form onSubmit={handleCreateUnit} className="p-4 bg-white border border-slate-300 rounded-xl shadow-xs grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
           <div>
-            <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Unit Number</label>
+            <label className="block font-semibold text-slate-700 mb-1">Unit Number</label>
             <input
               type="number"
               required
               value={newUnit.unit_number}
               onChange={(e) => setNewUnit({ ...newUnit, unit_number: Number(e.target.value) })}
-              className="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border rounded-lg"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
             />
           </div>
           <div className="sm:col-span-2">
-            <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Unit Title</label>
+            <label className="block font-semibold text-slate-700 mb-1">Unit Title</label>
             <input
               type="text"
               required
               placeholder="e.g. Memory Virtualization & Paging"
               value={newUnit.title}
               onChange={(e) => setNewUnit({ ...newUnit, title: e.target.value })}
-              className="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border rounded-lg"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
             />
           </div>
           <div>
-            <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Total Hours</label>
+            <label className="block font-semibold text-slate-700 mb-1">Total Hours</label>
             <input
               type="number"
               required
               value={newUnit.total_hours}
               onChange={(e) => setNewUnit({ ...newUnit, total_hours: Number(e.target.value) })}
-              className="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border rounded-lg"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
             />
           </div>
           <div className="sm:col-span-3">
-            <label className="block font-medium text-slate-700 dark:text-slate-300 mb-1">Topics (comma-separated)</label>
+            <label className="block font-semibold text-slate-700 mb-1">Topics (comma-separated)</label>
             <input
               type="text"
               placeholder="e.g. TLB, Page Replacement Algorithms, Thrashing"
               value={newUnit.topics}
               onChange={(e) => setNewUnit({ ...newUnit, topics: e.target.value })}
-              className="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border rounded-lg"
+              className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-black"
             />
           </div>
           <div className="flex items-end gap-2">
-            <button type="submit" className="flex-1 py-1.5 bg-indigo-600 text-white rounded-lg font-semibold">
+            <button type="submit" className="flex-1 py-1.5 bg-black hover:bg-neutral-800 text-white rounded-lg font-semibold cursor-pointer">
               Save Unit
             </button>
-            <button type="button" onClick={() => setShowAddUnit(false)} className="px-3 py-1.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg">
+            <button type="button" onClick={() => setShowAddUnit(false)} className="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg cursor-pointer hover:bg-slate-200">
               Cancel
             </button>
           </div>
@@ -278,22 +278,22 @@ export const SyllabusView: React.FC = () => {
       )}
 
       {/* Subject Selector Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200">
         {subjects.map((sub) => {
           const isSelected = sub.id === selectedSubjectId;
           return (
             <button
               key={sub.id}
               onClick={() => setSelectedSubjectId(sub.id)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer shrink-0 flex items-center gap-2 ${
+              className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer shrink-0 flex items-center gap-2 border ${
                 isSelected
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50'
+                  ? 'bg-black text-white border-black shadow-xs'
+                  : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
               }`}
             >
               <BookOpen className="w-3.5 h-3.5" />
               <span>{sub.name}</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${isSelected ? 'bg-indigo-700' : 'bg-slate-100 dark:bg-slate-800'}`}>
+              <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${isSelected ? 'bg-zinc-800 text-white' : 'bg-slate-100 text-slate-700'}`}>
                 {sub.code}
               </span>
             </button>
@@ -304,29 +304,29 @@ export const SyllabusView: React.FC = () => {
       {/* Progress & AI Velocity Banner */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Progress Card */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold uppercase text-slate-500">Curriculum Completion</span>
-            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{overallProgress}%</span>
+            <span className="text-xs font-bold text-slate-900">{overallProgress}%</span>
           </div>
-          <div className="text-2xl font-extrabold text-slate-900 dark:text-white">
+          <div className="text-2xl font-extrabold text-slate-900">
             {totalCompletedHours} / {totalCourseHours} <span className="text-sm font-normal text-slate-500">Teaching Hours</span>
           </div>
-          <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full mt-3 overflow-hidden">
+          <div className="w-full bg-slate-100 h-2.5 rounded-full mt-3 overflow-hidden">
             <div
-              className="h-full bg-indigo-600 rounded-full transition-all duration-500"
+              className="h-full bg-black rounded-full transition-all duration-500"
               style={{ width: `${overallProgress}%` }}
             />
           </div>
         </div>
 
         {/* Velocity Card */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold uppercase text-slate-500">Pace Forecast</span>
-            <TrendingUp className="w-4 h-4 text-emerald-500" />
+            <TrendingUp className="w-4 h-4 text-emerald-600" />
           </div>
-          <div className="text-2xl font-extrabold text-slate-900 dark:text-white">
+          <div className="text-2xl font-extrabold text-slate-900">
             {prediction?.estimatedWeeksToCompletion || '3.2'} <span className="text-sm font-normal text-slate-500">Weeks to Target</span>
           </div>
           <span className="text-xs text-slate-500 mt-2 block">
@@ -335,15 +335,15 @@ export const SyllabusView: React.FC = () => {
         </div>
 
         {/* Risk / Milestone Card */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold uppercase text-slate-500">Milestone Readiness</span>
-            <Sparkles className="w-4 h-4 text-amber-500" />
+            <Sparkles className="w-4 h-4 text-slate-900" />
           </div>
-          <div className="text-xl font-bold text-slate-900 dark:text-white">
+          <div className="text-xl font-bold text-slate-900">
             {overallProgress >= 60 ? 'Exam Schedule Ready' : 'In Progress'}
           </div>
-          <span className="text-xs text-emerald-600 font-semibold mt-2 block">
+          <span className="text-xs text-emerald-700 font-semibold mt-2 block">
             {prediction?.riskStatus === 'HIGH_RISK_DELAY' ? '⚠️ Velocity deficit detected' : '✓ Ahead of final examination window'}
           </span>
         </div>
@@ -351,13 +351,13 @@ export const SyllabusView: React.FC = () => {
 
       {/* Syllabus Unit List */}
       <div className="space-y-3">
-        <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <BookOpen className="w-4 h-4 text-indigo-600" />
+        <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+          <BookOpen className="w-4 h-4 text-slate-900" />
           Curriculum Modules & Teaching Hours
         </h3>
 
         {syllabusUnits.length === 0 ? (
-          <div className="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs text-slate-400">
+          <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 text-xs text-slate-500">
             No syllabus units created yet for this subject. Click "Add Unit" above.
           </div>
         ) : (
@@ -368,16 +368,16 @@ export const SyllabusView: React.FC = () => {
             return (
               <div
                 key={unit.id}
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4"
+                className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 font-mono">
+                    <span className="text-xs font-bold text-slate-900 font-mono">
                       Unit {unit.unit_number}:
                     </span>
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate">{unit.title}</h4>
+                    <h4 className="text-sm font-bold text-slate-900 truncate">{unit.title}</h4>
                     {isCompleted && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-800">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                         <CheckCircle className="w-3 h-3" /> Completed
                       </span>
                     )}
@@ -388,7 +388,7 @@ export const SyllabusView: React.FC = () => {
                       {unit.topics.map((t, idx) => (
                         <span
                           key={idx}
-                          className="text-[11px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-md"
+                          className="text-[11px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md border border-slate-200"
                         >
                           {t}
                         </span>
@@ -398,9 +398,9 @@ export const SyllabusView: React.FC = () => {
 
                   {/* Progress bar */}
                   <div className="flex items-center gap-3 mt-3">
-                    <div className="flex-1 bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div className="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden">
                       <div
-                        className={`h-full rounded-full transition-all ${isCompleted ? 'bg-emerald-500' : 'bg-indigo-600'}`}
+                        className={`h-full rounded-full transition-all ${isCompleted ? 'bg-emerald-600' : 'bg-black'}`}
                         style={{ width: `${unitProgress}%` }}
                       />
                     </div>
@@ -412,22 +412,22 @@ export const SyllabusView: React.FC = () => {
 
                 {/* Faculty/Admin Hour Increment Controls */}
                 {(isFaculty || isAdmin) && (
-                  <div className="flex items-center gap-1.5 shrink-0 bg-slate-50 dark:bg-slate-800/60 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                  <div className="flex items-center gap-1.5 shrink-0 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
                     <button
                       onClick={() => handleUpdateProgress(unit.id, -1)}
                       disabled={unit.completed_hours <= 0}
-                      className="p-1.5 text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 rounded-lg disabled:opacity-30 cursor-pointer transition-colors"
+                      className="p-1.5 text-slate-700 hover:bg-white rounded-lg disabled:opacity-30 cursor-pointer transition-colors"
                       title="Decrease 1 hour"
                     >
                       <Minus className="w-4 h-4" />
                     </button>
-                    <span className="text-xs font-mono font-bold px-2 text-slate-900 dark:text-white">
+                    <span className="text-xs font-mono font-bold px-2 text-slate-900">
                       {unit.completed_hours}h
                     </span>
                     <button
                       onClick={() => handleUpdateProgress(unit.id, 1)}
                       disabled={unit.completed_hours >= unit.total_hours}
-                      className="p-1.5 text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 rounded-lg disabled:opacity-30 cursor-pointer transition-colors"
+                      className="p-1.5 text-slate-700 hover:bg-white rounded-lg disabled:opacity-30 cursor-pointer transition-colors"
                       title="Increase 1 hour"
                     >
                       <Plus className="w-4 h-4" />
